@@ -32,11 +32,20 @@
 
         //To connect to server on port 9090
         ws.onmessage = message => {
+            //message data
             const response = JSON.parse(message.data);
             //console.log(response);
+
+            //connect
             if(response.method === "connect") {
                 clientId = response.clientId;
                 console.log("Client Id set successfully: " + clientId);
+            }
+
+            //create
+            if(response.method === "create") {
+                gameId = response.game.id;
+                console.log("Game Room successfully created. Room id is " + response.game.id + " with " + response.game.cells + " cells.");
             }
         }
     </script>

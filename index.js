@@ -19,6 +19,7 @@ httpServer.listen(9090, () => console.log("Listening on 9090.."));
 
 //hashmap for clients
 const clients = {};
+const games = {};
 
 //Creating a websocket server
 const wsServer = new WebSocketServer({
@@ -33,7 +34,24 @@ wsServer.on("request", request => {
     connection.on("message", message => {
         const result = JSON.parse(message.utf8Data);
         //Recieved a message from the client
-        console.log(result);
+        //console.log(result);
+        //user wants to create a new game
+        if(result.method == "create") {
+           const clientId = result.clientId;
+           const gameId = uuidv4();
+           games[gameId] = {
+               "id": gameId,
+               "cells": 40
+           };
+
+           const payLoad = {
+               "method": "create",
+               "game": games[gameId]
+           };
+
+           const con = clients[clientId].connection;
+           con.send(JSON.stringify(payLoad));
+        };
     });
 
     //generate a new clientID
