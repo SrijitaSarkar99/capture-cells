@@ -35,13 +35,15 @@ wsServer.on("request", request => {
         const result = JSON.parse(message.utf8Data);
         //Recieved a message from the client
         //console.log(result);
+
         //user wants to create a new game
         if(result.method == "create") {
            const clientId = result.clientId;
            const gameId = uuidv4();
            games[gameId] = {
                "id": gameId,
-               "cells": 40
+               "cells": 40,
+               "clients": []
            };
 
            const payLoad = {
@@ -51,7 +53,41 @@ wsServer.on("request", request => {
 
            const con = clients[clientId].connection;
            con.send(JSON.stringify(payLoad));
-        };
+        }
+
+
+        // a client wants to join
+        if(result.method == "join") {
+            const clientId = result.clientId;
+            const gameId = result.gameId;
+            const game = games[gameId];
+
+            if(game.clients.length >= 3) {
+                //max player reached
+                return;
+            }
+
+            const color = {
+                "0": "Red",
+                "1": "Blue",
+                "2": "Green"
+            }[game.clients.length];
+
+            game.clients.push({
+                "clientId": clientId,
+                "color": color
+            })
+
+            const payLoad = {
+                "method": "join",
+                "game": game
+            }
+
+            //loop through all clients and tell them people has joined
+            game.clients.forEach(c => {
+                clients[c.clientId].connection.send(JSON.stringify(payLoad))
+            })
+        }
     });
 
     //generate a new clientID
