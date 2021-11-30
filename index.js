@@ -58,12 +58,14 @@ wsServer.on("request", request => {
 
         // a client wants to join
         if(result.method == "join") {
+
             const clientId = result.clientId;
             const gameId = result.gameId;
             const game = games[gameId];
-
+            //console.log("here");
             if(game.clients.length >= 3) {
                 //max player reached
+                console.log("Room is full");
                 return;
             }
 
