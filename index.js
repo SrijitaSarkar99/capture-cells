@@ -80,6 +80,8 @@ wsServer.on("request", request => {
                 "color": color
             })
 
+            if(game.clients.length === 3) updateGameState();
+
             const payLoad = {
                 "method": "join",
                 "game": game
@@ -87,9 +89,31 @@ wsServer.on("request", request => {
 
             //loop through all clients and tell them people has joined
             game.clients.forEach(c => {
-                clients[c.clientId].connection.send(JSON.stringify(payLoad))
+                clients[c.clientId].connection.send(JSON.stringify(payLoad));
             })
         }
+
+        //a user plays
+        if (result.method === "play"){
+            
+            const gameId = result.gameId;
+            const cellId = result.cellId;
+            const color = result.color
+            let state = games[gameId].state;
+            if(!state) 
+                state = {};
+
+            state[cellId] = color;
+            games[gameId] = state;
+            const game = games[gameId];
+
+            const payLoad = {
+                "method": "play",
+                "game": game
+            }
+        }
+
+
     });
 
     //generate a new clientID
@@ -107,3 +131,22 @@ wsServer.on("request", request => {
     connection.send(JSON.stringify(payLoad));
     
 });
+
+
+//To update game state for all clients
+function updateGameState(){
+
+    for (const g of Object.keys(games)) {
+        const game = games[g];
+        const payLoad = {
+            "method": "update",
+            "game": game
+        };
+
+        game.clients.forEach(c=> {
+            clients[c.clientId].connection.send(JSON.stringify(payLoad))
+        })
+    }
+
+    setTimeout(updateGameState, 500);
+}

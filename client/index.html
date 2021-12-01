@@ -74,6 +74,17 @@
                 console.log("Game Room successfully created. Room id is " + response.game.id + " with " + response.game.cells + " cells.");
             }
 
+            //update to all clients
+            if(response.method === "update") {
+                if (!response.game.state) return;
+                for (const b of Object.keys(response.game.state)) {
+
+                    const color = response.game.state[b];
+                    const cellObject = document.getElementById("cell" + b);
+                    cellObject.style.backgroundColor = color;
+                }
+            }
+
             //join
             if(response.method === "join") {
                 const game = response.game;
@@ -95,9 +106,9 @@
                 while(divBoard.firstChild)
                     divBoard.removeChild (divBoard.firstChild);
 
-                for (let i = 0; i<game.cells ; i++) {
+                for (let i = 0; i < game.cells ; i++) {
                     const b = document.createElement("button");
-                    b.id = "cell" + i;
+                    b.id = "cell" + (i + 1);
                     b.tag = i + 1;
                     b.textContent = i + 1;
                     b.style.width = "150 px"
@@ -105,7 +116,14 @@
                     b.addEventListener("click", e => {
                         b.style.background = playerColor
 
-                        
+                        const payLoad = {
+                            "method": "play",
+                            "clientId": clientId,
+                            "gameId": gameId,
+                            "cellId": b.tag,
+                            "color": playerColor
+                        }
+                        ws.send(JSON.stringify(payLoad))
                     })
                     divBoard.appendChild(b);
                 }
