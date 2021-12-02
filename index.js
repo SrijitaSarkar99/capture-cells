@@ -102,19 +102,19 @@ wsServer.on("request", request => {
             
             const gameId = result.gameId;
             const cellId = result.cellId;
-            const color = result.color
+            const color = result.color;
             let state = games[gameId].state;
             if(!state) 
                 state = {};
 
             state[cellId] = color;
             games[gameId] = state;
-            const game = games[gameId];
+            // const game = games[gameId];
 
-            const payLoad = {
-                "method": "play",
-                "game": game
-            }
+            // const payLoad = {
+            //     "method": "play",
+            //     "game": game
+            // }
         }
 
 
@@ -141,20 +141,22 @@ wsServer.on("request", request => {
 
 //To update game state for all clients
 function updateGameState(){
-    console.log(games)
+    console.log("games" + games)
 
     for (const g of Object.keys(games)) {
         const game = games[g];
         console.log("here")
-        console.log(game);
-        console.log(game.clients);
+        console.log(game); //Receiving wrong object
+        console.log(game.clients); 
+
         const payLoad = {
             "method": "update",
             "game": game
         };
 
-        game.clients.forEach(c=> {
-            clients[c.clientId].connection.send(JSON.stringify(payLoad))
+        game.clients.forEach(c => {
+            console.log("foreach" + game.clients)
+            clients[c.clientId].connection.send(JSON.stringify(payLoad));
         })
     }
 

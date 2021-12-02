@@ -46,7 +46,7 @@
             console.log(payLoad)
             ws.send(JSON.stringify(payLoad));
             
-            console.log("request sent to join game")
+            // console.log("request sent to join game")
         })
 
 
@@ -82,6 +82,7 @@
             //update to all clients
             if(response.method === "update") {
                 if (!response.game.state) return;
+
                 for (const b of Object.keys(response.game.state)) {
 
                     const color = response.game.state[b];
@@ -112,30 +113,26 @@
                     divBoard.removeChild (divBoard.firstChild);
 
                 for (let i = 0; i < game.cells ; i++) {
+
                     const b = document.createElement("button");
                     b.id = "cell" + (i + 1);
                     b.tag = i + 1;
                     b.textContent = i + 1;
-                    b.style.width = "150 px"
-                    b.style.height = "150 px"
+                    b.style.width = "100px"
+                    b.style.height = "100px"
                     b.addEventListener("click", e => {
                         b.style.background = playerColor
 
 
-                        console.log({
+                        const payLoad = {
                             "method": "play",
                             "clientId": clientId,
                             "gameId": gameId,
                             "cellId": b.tag,
                             "color": playerColor
-                        });
-                        ws.send(JSON.stringify({
-                            "method": "play",
-                            "clientId": clientId,
-                            "gameId": gameId,
-                            "cellId": b.tag,
-                            "color": playerColor
-                        }));
+                        };
+                        console.log(payLoad)
+                        ws.send(JSON.stringify(payLoad))
                     })
                     divBoard.appendChild(b);
                 }
