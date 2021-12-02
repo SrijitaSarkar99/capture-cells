@@ -5,6 +5,8 @@ const { v4:uuidv4 } = require('uuid');
 //To serve this page on another port using express
 const app = require('express')();
 app.get("/", (req, res) => res.sendFile(__dirname + "/client/index.html"));
+app.get("/", (req, res) => res.sendFile(__dirname + "/client/styles.css"));
+
 
 app.listen(9091, () => console.log("Listening on http port 9091"))
 
@@ -19,7 +21,7 @@ httpServer.listen(9090, () => console.log("Listening on 9090.."));
 
 //hashmap for clients
 const clients = {};
-const games = {};
+let games = {};
 
 //Creating a websocket server
 const wsServer = new WebSocketServer({
@@ -33,6 +35,7 @@ wsServer.on("request", request => {
     connection.on("close", () => console.log("Connection is closed"));
     connection.on("message", message => {
         const result = JSON.parse(message.utf8Data);
+        console.log(result.method);
         //Recieved a message from the client
         //console.log(result);
 
@@ -60,6 +63,7 @@ wsServer.on("request", request => {
         if(result.method == "join") {
 
             const clientId = result.clientId;
+            console.log(clientId);
             const gameId = result.gameId;
             const game = games[gameId];
             //console.log("here");
@@ -128,6 +132,8 @@ wsServer.on("request", request => {
         "clientId": clientID 
     };
 
+    console.log(payLoad);
+
     connection.send(JSON.stringify(payLoad));
     
 });
@@ -135,9 +141,13 @@ wsServer.on("request", request => {
 
 //To update game state for all clients
 function updateGameState(){
+    console.log(games)
 
     for (const g of Object.keys(games)) {
         const game = games[g];
+        console.log("here")
+        console.log(game);
+        console.log(game.clients);
         const payLoad = {
             "method": "update",
             "game": game
