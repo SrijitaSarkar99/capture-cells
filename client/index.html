@@ -13,6 +13,7 @@
     <button id = 'btnCreate'>New Game</button>
     <button id = 'btnJoin'>Join Game</button>
     <input type = 'text' id = 'txtGameId'>
+    <div id = 'gameid'></div>
     <div id = 'divPlayers'></div>
     <div id = 'divBoard'></div>
 
@@ -27,6 +28,7 @@
         //HTML elements
         const btnCreate = document.getElementById('btnCreate');
         const btnJoin = document.getElementById('btnJoin');
+        const gameid = document.getElementById('gameid');
         const txtGameId = document.getElementById('txtGameId');
         const divPlayers = document.getElementById('divPlayers');
         const divBoard = document.getElementById('divBoard');
@@ -76,6 +78,11 @@
             //create
             if(response.method === "create") {
                 gameId = response.game.id;
+                
+                const d = document.createElement("div");
+                d.style.width = "300px";
+                d.textContent = gameId;
+                gameid.appendChild(d);
                 console.log("Game Room successfully created. Room id is " + response.game.id + " with " + response.game.cells + " cells.");
             }
 

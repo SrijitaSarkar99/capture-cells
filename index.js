@@ -108,13 +108,7 @@ wsServer.on("request", request => {
                 state = {};
 
             state[cellId] = color;
-            games[gameId] = state;
-            // const game = games[gameId];
-
-            // const payLoad = {
-            //     "method": "play",
-            //     "game": game
-            // }
+            games[gameId].state = state;
         }
 
 
