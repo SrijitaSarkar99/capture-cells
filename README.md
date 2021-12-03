@@ -20,13 +20,13 @@ npm run dev
 ```
 
 ### Tech stacks used
-+ NodeJS
-+ ExpressJS
-+ Websocket
++ [NodeJS](https://nodejs.org/en/docs/guides/)
++ [express](https://www.npmjs.com/package/express)
++ [websocket](https://www.npmjs.com/package/websocket)
 
 #### dependencies
 + [nodemon](https://www.npmjs.com/package/nodemon)
-+ [uuid](https://www.npmjs.com/package/nodemon)
++ [uuidv4](https://www.npmjs.com/package/uuidv4)
 
 
 ### Features implemented
