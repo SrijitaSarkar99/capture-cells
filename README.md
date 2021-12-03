@@ -25,8 +25,8 @@ npm run dev
 + Websocket
 
 #### dependencies
-+ nodemon
-+ uuid
++ [nodemon](https://www.npmjs.com/package/nodemon)
++ [uuid](https://www.npmjs.com/package/nodemon)
 
 
 ### Features implemented
