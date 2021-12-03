@@ -8,14 +8,22 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Capture cells</h1>
-    <h3>Websocket Implementation</h3>
-    <button id = 'btnCreate'>New Game</button>
-    <button id = 'btnJoin'>Join Game</button>
-    <input type = 'text' id = 'txtGameId'>
-    <div id = 'gameid'></div>
-    <div id = 'divPlayers'></div>
-    <div id = 'divBoard'></div>
+    <h1 style="text-align:center;">Capture cells</h1>
+    <h3 style="text-align:center;">Websocket Implementation</h3>
+    <div style="text-align:center;">
+        <button id = 'btnCreate' >Create Room</button>
+        <button id = 'btnJoin'>Join Room</button>
+    </div>
+    <div style="text-align: center; margin: auto; padding: 5px;">
+        <h5>~Game Id~</h3>
+        <input type = 'text' id = 'txtGameId' style="width:fit-content;">
+        <div id = 'gameid'></div>
+        <h5>~Player Id~</h5>
+        <div id = 'divPlayers'></div>
+    </div>
+    <div style="flex: auto;">
+        <div id = 'divBoard'></div>
+    </div>
 
     <script>
         let clientId = null;
@@ -125,8 +133,8 @@
                     b.id = "cell" + (i + 1);
                     b.tag = i + 1;
                     b.textContent = i + 1;
-                    b.style.width = "100px"
-                    b.style.height = "100px"
+                    b.style.width = "50px"
+                    b.style.height = "50px"
                     b.addEventListener("click", e => {
                         b.style.background = playerColor
 

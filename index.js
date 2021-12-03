@@ -45,7 +45,7 @@ wsServer.on("request", request => {
            const gameId = uuidv4();
            games[gameId] = {
                "id": gameId,
-               "cells": 40,
+               "cells": 36,
                "clients": []
            };
 
